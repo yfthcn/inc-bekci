@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<style>
+  :root {
+    --bg: #0f1417;
+    --panel: #161d21;
+    --border: #263038;
+    --text: #d7dde1;
+    --muted: #7c8a93;
+    --amber: #e0a458;
+    --green: #6fbf73;
+  }
+  * { box-sizing: border-box; }
+  body {
+    width: 280px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    font-size: 12.5px;
+    padding: 14px;
+    margin: 0;
+  }
+  h1 { font-size: 13px; color: var(--amber); margin: 0 0 10px 0; letter-spacing: 0.03em; }
+  .host { color: var(--muted); word-break: break-all; margin-bottom: 12px; font-size: 11px; }
+  .status { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .dot.on { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  button {
+    width: 100%;
+    background: var(--amber);
+    color: #1a1204;
+    border: none;
+    padding: 9px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  button.secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  a { color: var(--amber); font-size: 11px; }
+</style>
+</head>
+<body>
+  <h1>INC BEKÇİ</h1>
+  <div class="host" id="host">-</div>
+  <div class="status"><span class="dot" id="dot"></span><span id="statusText">yükleniyor...</span></div>
+  <button id="watchBtn">Bu sayfayı izle</button>
+  <button id="stopBtn" class="secondary">İzlemeyi durdur</button>
+  <div><a href="#" id="optionsLink">Ayarları aç →</a></div>
+</body>
+<script src="popup.js"></script>
+</html>

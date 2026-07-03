@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Inc Bekçi - Ayarlar</title>
+<style>
+  :root {
+    --bg: #0f1417;
+    --panel: #161d21;
+    --border: #263038;
+    --text: #d7dde1;
+    --muted: #7c8a93;
+    --amber: #e0a458;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    font-size: 13px;
+    padding: 24px;
+    max-width: 560px;
+  }
+  h1 {
+    font-size: 15px;
+    color: var(--amber);
+    letter-spacing: 0.04em;
+    margin: 0 0 4px 0;
+  }
+  p.sub { color: var(--muted); margin: 0 0 20px 0; font-size: 12px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; margin-bottom: 6px; color: var(--muted); }
+  input[type=text], input[type=number] {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  .row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  button {
+    background: var(--amber);
+    color: #1a1204;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.secondary {
+    background: transparent;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+  }
+  #status { margin-left: 10px; color: var(--muted); font-size: 12px; }
+  .hint { color: var(--muted); font-size: 11px; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <h1>INC BEKÇİ // AYARLAR</h1>
+  <p class="sub">ServiceNow liste sayfasını izleyip yeni incident düştüğünde ses + bildirim verir.</p>
+
+  <div class="row">
+    <input type="checkbox" id="enabled" />
+    <label for="enabled" style="margin:0;">İzlemeyi etkinleştir</label>
+  </div>
+
+  <div class="field">
+    <label for="hostMatch">Hedef host (örn. yourcompany.service-now.com)</label>
+    <input type="text" id="hostMatch" placeholder="service-now.com" />
+    <div class="hint">Boş bırakırsan hiçbir sayfada çalışmaz — bu güvenlik/performans için zorunlu.</div>
+  </div>
+
+  <div class="field">
+    <label for="pathMatch">Hedef sayfa yolu (path)</label>
+    <input type="text" id="pathMatch" placeholder="/now/sow/list/..." />
+    <div class="hint">Popup'taki "Bu sayfayı izle" bunu otomatik doldurur. Sadece bu sayfada tarama ve auto-refresh yapılır; ticket detay sayfalarında yanlış alarm ve istenmeyen yenileme engellenir. Boş bırakırsan host'taki her sayfa taranır (önerilmez).</div>
+  </div>
+
+  <div class="field">
+    <label for="pattern">Incident numarası regex'i</label>
+    <input type="text" id="pattern" />
+    <div class="hint">Varsayılan: INC\d{6,} — şirketinizin numara formatı farklıysa değiştirin. Not: gruplu/kapalı liste görünümünde numaralar DOM'da olmadığı için bu mekanizma devreye girmez, aşağıdaki sayaç mekanizması çalışır.</div>
+  </div>
+
+  <div class="field">
+    <label for="countPattern">Toplam sayı regex'i</label>
+    <input type="text" id="countPattern" />
+    <div class="hint">Varsayılan: (\d+)\s+total\s+incidents — listenin sağ üstündeki "28 total incidents" yazısını izler, sayı artınca alarm çalar. Gruplu görünümde asıl çalışan mekanizma budur. UI diliniz İngilizce değilse buradaki kalıbı kendi dilinize göre değiştirin.</div>
+  </div>
+
+  <div class="field">
+    <label for="intervalMs">Tarama aralığı (ms)</label>
+    <input type="number" id="intervalMs" min="3000" step="1000" />
+    <div class="hint">En az 3000 ms. Çok düşük değer sayfayı yavaşlatabilir.</div>
+  </div>
+
+  <div class="row">
+    <input type="checkbox" id="soundOn" />
+    <label for="soundOn" style="margin:0;">Ses çal</label>
+  </div>
+
+  <div class="row">
+    <input type="checkbox" id="autoRefresh" />
+    <label for="autoRefresh" style="margin:0;">Sayfayı otomatik yenile</label>
+  </div>
+
+  <div class="field">
+    <label for="refreshMinutes">Yenileme aralığı (dakika)</label>
+    <input type="number" id="refreshMinutes" min="1" step="1" />
+    <div class="hint">SNOW liste görünümü kendiliğinden güncellenmiyorsa, sayfayı bu aralıkla yeniler. "Görüldü" listesi korunur, yenileme bildirimleri kaçırtmaz.</div>
+  </div>
+
+  <div class="row">
+    <button id="save">Kaydet</button>
+    <button id="clearSeen" class="secondary">Tüm "görüldü" kayıtlarını sıfırla</button>
+    <span id="status"></span>
+  </div>
+</body>
+<script src="options.js"></script>
+</html>
